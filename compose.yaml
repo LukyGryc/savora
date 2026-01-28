@@ -12,14 +12,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    stdin_open: true  # Keep STDIN open for interactive mode
+    tty: true         # Allocate a pseudo-TTY for proper keyboard input
     environment:
       NODE_ENV: development
+      # Enable polling for file watching on Windows/Docker
+      WATCHPACK_POLLING: "true"
+      # Next.js specific settings for Docker
+      NEXT_TELEMETRY_DISABLED: "1"
     command: npm run dev -- -H 0.0.0.0 -p 3000
     ports:
       - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/.next  # Prevent .next from being overwritten
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
