@@ -6,9 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 
 const CalendarPage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date(new Date().getFullYear(), 1, 3)
-  );
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().getFullYear(), 1, 3));
 
   return (
     <div className="bg-bg-primary w-fit flex-1 mx-auto py-10 content-center">

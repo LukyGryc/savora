@@ -4,15 +4,16 @@ import { Calendar, CalendarDayButton } from "../ui/calendar"
 import { Card, CardContent } from "../ui/card"
 
 interface CalendarCard_BigProps {
-  selectedDate?: Date;
-  onSelect?: (date: Date | undefined) => void;
+  selectedDate: Date;
+  onSelect: (date: Date) => void;
 }
 
 const CalendarCard_Big = ({ selectedDate, onSelect }: CalendarCard_BigProps) => {
   return (
-    <Card className="mx-auto w-fit p-0">
+    <Card className="mx-auto w-fit p-0 border-white">
       <CardContent className="p-0">
         <Calendar
+          required
           mode="single"
           selected={selectedDate}
           onSelect={onSelect}
