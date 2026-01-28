@@ -8,7 +8,6 @@ type CustomControllerProps<T extends FieldValues> = {
   label: string
   type?: "text" | "number" | "email" | "password"
   placeholder?: string
-  defaultValue?: string | number
 }
 
 function CustomController<T extends FieldValues>({
@@ -17,7 +16,6 @@ function CustomController<T extends FieldValues>({
   label,
   type = "text",
   placeholder,
-  defaultValue,
 }: CustomControllerProps<T>) {
   return (
     <Controller
@@ -41,7 +39,6 @@ function CustomController<T extends FieldValues>({
             type={type}
             placeholder={placeholder}
             className="text-white"
-            defaultValue={defaultValue}
           />
 
           {fieldState.invalid && (

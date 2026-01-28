@@ -8,6 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomController from "../common/CustomController";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { Field, FieldError, FieldLabel } from "../ui/field";
+import { authClient } from "@/lib/auth-client";
+import { addData } from "@/server/items";
+import { toast } from "sonner";
 
 interface Props {
     selectedDate: Date
@@ -38,8 +41,16 @@ const formSchema = z.object({
 });
 
 export type AddNewItemFormSchema = z.infer<typeof formSchema>;
+export interface Item {
+    name: string;
+    amount: number;
+    categories: string[];
+    date: Date;
+    email: string;
+}
 
 const AddNewItem = ({ selectedDate }: Props) => {
+    const { data: session } = authClient.useSession();
 
     const form = useForm<AddNewItemFormSchema>({
         resolver: zodResolver(formSchema),
@@ -50,8 +61,22 @@ const AddNewItem = ({ selectedDate }: Props) => {
         },
     })
 
-    const onSubmit = (data: AddNewItemFormSchema) => {
-        console.log(data);
+    const onSubmit = async (data: AddNewItemFormSchema) => {
+        console.log(data, selectedDate, session?.user.email);
+        const item: Item = {
+            name: data.name,
+            amount: data.amount,
+            categories: data.categories,
+            date: selectedDate,
+            email: session?.user.email ?? "",
+        }
+
+        const { success, message } = await addData(item);
+        if (success) {
+            toast.success(message);
+        } else {
+            toast.error(message);
+        }
     }
 
     return (

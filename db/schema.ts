@@ -1,5 +1,19 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, integer, date, uuid,  } from "drizzle-orm/pg-core";
+
+export const dataTable = pgTable("data", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull(),
+  date: date("date").notNull(),
+  name: text("name").notNull(),
+  amount: integer("amount").notNull(),
+  categories: text("categories").array().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
