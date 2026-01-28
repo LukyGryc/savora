@@ -8,6 +8,16 @@ export const isUserLoggedIn = async (): Promise<boolean> => {
   return session?.session?.id ? true : false;
 }
 
+export const getUserEmail = async (): Promise<string> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.user.email ?? ""
+}
+
+export const getUserID = async (): Promise<string> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.session.id ?? ""
+}
+
 export const logUserOut = async () => {
   await auth.api.signOut({ headers: await headers() })
 }

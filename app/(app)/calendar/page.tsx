@@ -1,29 +1,22 @@
-"use client";
+import { getUserEmail } from "@/util/userUtil";
+import CalendarContent from "./CalendarContent";
+import { getItemsForUser } from "@/server/items";
 
-import CalendarCard_Big from "@/components/calendar/CalendarCard_Big";
-import Tracking from "@/components/calendar/Tracking";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+const CalendarPage = async () => {
 
-const CalendarPage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().getFullYear(), 1, 3));
+  const email = await getUserEmail();
+  if(!email) {
+    return <div>You are not logged in</div>;
+  }
+
+  const items = (await getItemsForUser()).map( item => ({
+    ...item,
+    date: new Date(item.date),
+  }));
 
   return (
     <div className="bg-bg-primary w-fit flex-1 mx-auto py-10 content-center">
-      <div className="w-fit flex-col lg:flex-row gap-10 flex">
-        <Card className="flex flex-col">
-          <CardHeader>
-            <CardTitle>Calendar</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CalendarCard_Big
-              selectedDate={selectedDate}
-              onSelect={setSelectedDate}
-            />
-          </CardContent>
-        </Card>
-        <Tracking selectedDate={selectedDate} />
-      </div>
+      <CalendarContent items={items} />
     </div>
   );
 };

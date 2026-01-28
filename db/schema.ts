@@ -3,8 +3,8 @@ import { pgTable, text, timestamp, boolean, index, integer, date, uuid,  } from 
 
 export const dataTable = pgTable("data", {
   id: uuid("id").primaryKey().defaultRandom(),
-  email: text("email").notNull(),
-  date: date("date").notNull(),
+  userId: text("user_id").notNull(),
+  date: timestamp("date").notNull(),
   name: text("name").notNull(),
   amount: integer("amount").notNull(),
   categories: text("categories").array().notNull(),
