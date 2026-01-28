@@ -3,8 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { format } from "date-fns"
 import { Separator } from "../ui/separator";
 import { CircleXIcon, Edit2, PlusIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { useState } from "react";
 import AddNewItem from "./AddNewItem";
 
 interface TrackingProps {
@@ -21,7 +19,6 @@ const trackingData = [
 ]
 
 const Tracking = ({ selectedDate }: TrackingProps) => {
-    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     const handleDelete = (id: number) => {
         alert(`Deleting item ${id}`);
@@ -30,11 +27,7 @@ const Tracking = ({ selectedDate }: TrackingProps) => {
     const handleEdit = (id: number) => {
         alert(`Editing item ${id}`);
     }
-
-    const handleAddItem = () => {
-        alert("Adding item");
-    }
-
+    
     return (
         <Card className="flex flex-col min-w-[400px]">
             <CardHeader>

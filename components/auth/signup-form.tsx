@@ -21,7 +21,7 @@ import { z } from "zod"
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import AuthController from "./AuthController";
+import CustomController from "../common/CustomController";
 
 const formSchema = z.object({
   email: z.email(),
@@ -69,9 +69,9 @@ export function SignUpForm({
                 <span className="text-white">Start by creating an account</span>
               </FieldSeparator>
 
-              <AuthController form={form} name="name" label="Name" type="text" placeholder="Peter Parker" />
-              <AuthController form={form} name="email" label="Email" type="email" placeholder="m@example.com" />
-              <AuthController form={form} name="password" label="Password" type="password" placeholder="Password" />
+              <CustomController form={form} name="name" label="Name" type="text" placeholder="Peter Parker" />
+              <CustomController form={form} name="email" label="Email" type="email" placeholder="m@example.com" />
+              <CustomController form={form} name="password" label="Password" type="password" placeholder="Password" />
 
               <Field>
                 <Button

@@ -1,85 +1,111 @@
 "use client";
-import { Label } from "@radix-ui/react-label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
-import { Combobox, ComboboxChip, ComboboxChips, ComboboxChipsInput, ComboboxContent, ComboboxItem, ComboboxList, ComboboxTrigger, ComboboxValue, useComboboxAnchor } from "../ui/combobox";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CustomController from "../common/CustomController";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { Field, FieldError, FieldLabel } from "../ui/field";
 
 interface Props {
     selectedDate: Date
 }
 
-const frameworks = [
-    "Next.js",
-    "SvelteKit",
-    "Nuxt.js",
-    "Remix",
-    "Astro",
+//TODO: Make categories user specific
+const categories = [
+    "Food",
+    "Transportation",
+    "Housing",
+    "Utilities",
+    "Entertainment",
+    "Health",
+    "Education",
+    "Travel",
+    "Other"
 ];
+
+const formSchema = z.object({
+    name: z
+        .string()
+        .min(1, "Name must be at least 1 character."),
+    amount: z
+        .number({ error: "Must be a number" })
+        .min(1, "Amount must be at least 1."),
+    categories: z
+        .array(z.string())
+});
+
+export type AddNewItemFormSchema = z.infer<typeof formSchema>;
 
 const AddNewItem = ({ selectedDate }: Props) => {
 
-    const anchor = useComboboxAnchor()
+    const form = useForm<AddNewItemFormSchema>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+            amount: 1,
+            categories: [categories[0]],
+        },
+    })
+
+    const onSubmit = (data: AddNewItemFormSchema) => {
+        console.log(data);
+    }
 
     return (
         <Popover>
             <PopoverTrigger asChild>
                 <Button variant="primary"><PlusIcon /> Add Item</Button>
             </PopoverTrigger>
-            <PopoverContent side="bottom" align="start" className="w-90">
-                <div className="grid gap-4">
-                    <div className="grid gap-2">
-                        <div className="grid grid-cols-3 items-center gap-4">
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                                id="name"
-                                className="col-span-2 h-8"
-                            />
-                        </div>
-                        <div className="grid grid-cols-3 items-center gap-4">
-                            <Label htmlFor="amount">Amount ($)</Label>
-                            <Input
-                                id="amount"
-                                className="col-span-2 h-8"
-                            />
-                        </div>
-                        <div className="grid grid-cols-3 items-center gap-4">
-                            <Label htmlFor="amount">Categories</Label>
-                            <div className="col-span-2">
-                                <Combobox
-                                    multiple
-                                    autoHighlight
-                                    items={frameworks}
-                                    defaultValue={[frameworks[0]]}
-                                >
-                                    <ComboboxChips ref={anchor}>
-                                        <ComboboxValue>
-                                            {(values) => (
-                                                <>
-                                                    {values.map((value: string) => (
-                                                        <ComboboxChip key={value}>{value}</ComboboxChip>
+            <PopoverContent side="bottom" align="start" className="w-70">
+                <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmit)}>
+                    <div className="grid gap-4">
+                        <div className="grid gap-2">
+                            <CustomController form={form} name="name" label="Name" type="text" placeholder="Name" />
+                            <CustomController form={form} name="amount" label="Amount ($)" type="number" placeholder="Amount" />
+
+                            <Controller
+                                control={form.control}
+                                name="categories"
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel className="text-white">
+                                            Category
+                                        </FieldLabel>
+
+                                        <Select
+                                            value={field.value?.[0] ?? categories[0]}
+                                            onValueChange={(value) => field.onChange([value])}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select category" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Categories</SelectLabel>
+                                                    {categories.map((category) => (
+                                                        <SelectItem key={category} value={category}>
+                                                            {category}
+                                                        </SelectItem>
                                                     ))}
-                                                    <ComboboxChipsInput />
-                                                </>
-                                            )}
-                                        </ComboboxValue>
-                                    </ComboboxChips>
-                                    <ComboboxContent anchor={anchor}>
-                                        <ComboboxList>
-                                            {(item) => (
-                                                <ComboboxItem key={item} value={item}>
-                                                    {item}
-                                                </ComboboxItem>
-                                            )}
-                                        </ComboboxList>
-                                    </ComboboxContent>
-                                </Combobox>
-                            </div>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        {fieldState.error && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
                         </div>
                     </div>
-                </div>
-                <Button variant="primary" className="mt-4">Add Item</Button>
+                    <Button variant="primary" className="mt-4" form="add-new-item-form" type="submit">Add Item</Button>
+                </form>
             </PopoverContent>
         </Popover>
     )
