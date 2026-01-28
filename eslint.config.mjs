@@ -7,7 +7,6 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      "no-unused-vars": "of",
       "@typescript-eslint/no-unused-vars": "error",
     },
   },

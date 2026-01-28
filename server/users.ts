@@ -10,20 +10,20 @@ export const signIn = async ({ email, password }: SignInFormSchema) => {
       body: {
         email,
         password,
-      }
-    })
+      },
+    });
 
     return {
       success: true,
       message: "Sign in successful",
-    }
+    };
   } catch {
     return {
       success: false,
       message: "Incorrect email or password",
-    }
+    };
   }
-}
+};
 
 export const signUp = async ({ email, password, name }: SignUpFormSchema) => {
   try {
@@ -32,17 +32,24 @@ export const signUp = async ({ email, password, name }: SignUpFormSchema) => {
         email,
         password,
         name,
-      }
-    })
+      },
+    });
+
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
+    });
 
     return {
       success: true,
       message: "Sign up successful",
-    }
+    };
   } catch {
     return {
       success: false,
       message: "Sign up failed",
-    }
+    };
   }
-}
+};

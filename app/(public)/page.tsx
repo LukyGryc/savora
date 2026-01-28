@@ -3,6 +3,11 @@ import FrequentlyAskedQuestionsSection from "@/components/landingPage/Frequently
 import HowItWorksSection from "@/components/landingPage/HowItWorks/HowItWorksSection";
 import IntroSection from "@/components/landingPage/IntroSection";
 import ReadyToTrackSmarterSection from "@/components/landingPage/ReadyToTrackSmarter/ReadyToTrackSmarterSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Home | Savora',
+};
 
 export default function Home() {
   return (

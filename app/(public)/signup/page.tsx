@@ -1,6 +1,11 @@
 import { SignUpForm } from "@/components/auth/signup-form"
 import { isUserLoggedIn } from "@/util/userUtil";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: 'Sign up',
+};
 
 export default async function SignUpPage() {
 
