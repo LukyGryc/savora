@@ -119,6 +119,10 @@ export const deleteData = async (id: string) => {
 export async function getItemsForUser(): Promise<DataItem[]> {
     const userId = await getUserID();
 
+    if(!userId) {
+        return [];
+    }
+
     const rows = await db.select().from(dataTable).where(eq(dataTable.userId, userId));
 
     return rows.map((r: any) => ({
