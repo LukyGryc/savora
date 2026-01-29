@@ -1,18 +1,19 @@
 "use client";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Button } from "../ui/button";
-import { PlusIcon } from "lucide-react";
 import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomController from "../common/CustomController";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import { addData, DataItem } from "@/server/items";
-import { toast } from "sonner";
+import { JSX } from "react";
+import { DataItem } from "@/server/items";
 
 interface Props {
-    selectedDate: Date
+    popoverTrigger: JSX.Element,
+    onSubmit: (data: AddNewItemFormSchema) => void
+    item?: DataItem
 }
 
 //TODO: Make categories user specific
@@ -32,47 +33,30 @@ const formSchema = z.object({
     name: z
         .string()
         .min(1, "Name must be at least 1 character."),
+    // allow decimals, minimum $0.01
     amount: z
         .number({ error: "Must be a number" })
-        .min(1, "Amount must be at least 1."),
+        .min(0.01, "Amount must be at least 0.01."),
     categories: z
         .array(z.string())
 });
 
 export type AddNewItemFormSchema = z.infer<typeof formSchema>;
 
-
-const AddNewItem = ({ selectedDate }: Props) => {
+const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
     const form = useForm<AddNewItemFormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            amount: 1,
-            categories: [categories[0]],
+            name: item?.name ?? "",
+            amount: item?.amount ?? 1,
+            categories: item?.categories ?? [categories[0]],
         },
     })
-
-    const onSubmit = async (data: AddNewItemFormSchema) => {
-
-        const item: DataItem = {
-            name: data.name,
-            amount: data.amount,
-            categories: data.categories,
-            date: selectedDate,
-        }
-
-        const { success, message } = await addData(item);
-        if (success) {
-            toast.success(message);
-        } else {
-            toast.error(message);
-        }
-    }
 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="primary"><PlusIcon /> Add Item</Button>
+                { popoverTrigger }
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="w-70">
                 <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -126,4 +110,4 @@ const AddNewItem = ({ selectedDate }: Props) => {
     )
 }
 
-export default AddNewItem
+export default ItemPopover

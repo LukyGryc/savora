@@ -3,6 +3,7 @@
 import { SignInFormSchema } from "@/components/auth/signIn-form";
 import { SignUpFormSchema } from "@/components/auth/signup-form";
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const signIn = async ({ email, password }: SignInFormSchema) => {
   try {
@@ -53,3 +54,22 @@ export const signUp = async ({ email, password, name }: SignUpFormSchema) => {
     };
   }
 };
+
+export const isUserLoggedIn = async (): Promise<boolean> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.session?.id ? true : false;
+}
+
+export const getUserEmail = async (): Promise<string> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.user.email ?? ""
+}
+
+export const getUserID = async (): Promise<string> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  return session?.session.userId ?? ""
+}
+
+export const logUserOut = async () => {
+  await auth.api.signOut({ headers: await headers() })
+}

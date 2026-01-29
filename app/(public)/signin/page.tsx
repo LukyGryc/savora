@@ -1,5 +1,5 @@
 import { LoginForm } from "@/components/auth/signIn-form"
-import { isUserLoggedIn } from "@/util/userUtil";
+import { isUserLoggedIn } from "@/server/users";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 

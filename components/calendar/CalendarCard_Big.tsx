@@ -1,14 +1,18 @@
 "use client";
+import { DataItem } from "@/server/items";
 //Had to name this file this way even though I don't know whether I will need a different calendar card, but CalendarCard was throwing error
 import { Calendar, CalendarDayButton } from "../ui/calendar"
 import { Card, CardContent } from "../ui/card"
+import { formatAmountCurrency, getItemsForDate } from "@/util/itemsUtil";
 
 interface CalendarCard_BigProps {
   selectedDate: Date;
   onSelect: (date: Date) => void;
+  items: DataItem[];
 }
 
-const CalendarCard_Big = ({ selectedDate, onSelect }: CalendarCard_BigProps) => {
+const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigProps) => {
+
   return (
     <Card className="mx-auto w-fit p-0 border-white">
       <CardContent className="p-0">
@@ -28,11 +32,12 @@ const CalendarCard_Big = ({ selectedDate, onSelect }: CalendarCard_BigProps) => 
           weekStartsOn={1}
           components={{
             DayButton: ({ children, day, ...props }) => {
+              const amount = getItemsForDate(items, day.date).reduce((acc, item) => acc + item.amount, 0);
               return (
                 <CalendarDayButton day={day} {...props} >
                   <div className="flex flex-col gap-5">
                     {children}
-                    <span>xdd</span>
+                    <span>{amount === 0 ? "" : formatAmountCurrency(amount)}</span>
                   </div>
                 </CalendarDayButton>
               )

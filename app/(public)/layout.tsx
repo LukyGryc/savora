@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import PublicHeader from "@/app/(public)/PublicHeader";
 import Footer from "@/components/layout/Footer";
-import { isUserLoggedIn } from "@/util/userUtil";
+import { isUserLoggedIn } from "@/server/users";
 import AppHeader from "../(app)/AppHeader";
 
 export const metadata: Metadata = {

@@ -37,6 +37,7 @@ function CustomController<T extends FieldValues>({
             }}
             id={field.name}
             type={type}
+            step={type === "number" ? 0.01 : undefined}
             placeholder={placeholder}
             className="text-white"
           />

@@ -1,6 +1,6 @@
-import { getUserEmail } from "@/util/userUtil";
+import { getUserEmail } from "@/server/users";
 import CalendarContent from "./CalendarContent";
-import { getItemsForUser } from "@/server/items";
+import { DataItem, getItemsForUser } from "@/server/items";
 
 const CalendarPage = async () => {
 
@@ -9,11 +9,9 @@ const CalendarPage = async () => {
     return <div>You are not logged in</div>;
   }
 
-  const items = (await getItemsForUser()).map( item => ({
-    ...item,
-    date: new Date(item.date),
-  }));
-
+  // getItemsForUser already returns converted date and amount as number
+  const items: DataItem[] = await getItemsForUser();
+  
   return (
     <div className="bg-bg-primary w-fit flex-1 mx-auto py-10 content-center">
       <CalendarContent items={items} />

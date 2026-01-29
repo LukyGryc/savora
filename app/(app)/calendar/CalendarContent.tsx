@@ -7,10 +7,7 @@ import { DataItem } from "@/server/items";
 import { useState } from "react";
 
 const CalendarContent = ({ items }: { items: DataItem[] }) => {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().getFullYear(), 1, 3));
-
-    //Todo: Append items to the calendar and tracking card
-    console.log(items);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     return (
         <div className="w-fit flex-col lg:flex-row gap-10 flex">
@@ -22,10 +19,11 @@ const CalendarContent = ({ items }: { items: DataItem[] }) => {
                     <CalendarCard_Big
                         selectedDate={selectedDate}
                         onSelect={setSelectedDate}
+                        items={items}
                     />
                 </CardContent>
             </Card>
-            <Tracking selectedDate={selectedDate} />
+            <Tracking selectedDate={selectedDate} items={items}/>
         </div>
     )
 }

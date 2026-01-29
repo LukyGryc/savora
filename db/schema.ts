@@ -1,12 +1,13 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, integer, date, uuid,  } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, numeric, uuid } from "drizzle-orm/pg-core";
 
 export const dataTable = pgTable("data", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id").notNull(),
   date: timestamp("date").notNull(),
   name: text("name").notNull(),
-  amount: integer("amount").notNull(),
+  // Use numeric with scale 2 to store amounts with two decimal places
+  amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
   categories: text("categories").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

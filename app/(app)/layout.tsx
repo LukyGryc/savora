@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../../app/globals.css";
 import AppHeader from "@/app/(app)/AppHeader";
 import Footer from "@/components/layout/Footer";
-import { isUserLoggedIn } from "@/util/userUtil";
+import { isUserLoggedIn } from "@/server/users";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {

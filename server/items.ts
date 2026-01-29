@@ -1,19 +1,23 @@
 "use server";
 
+import { CreateDataItemInput } from "@/components/calendar/Tracking";
 import { db } from "@/db/drizzle";
 import { dataTable } from "@/db/schema";
-import { getUserID } from "@/util/userUtil";
+import { getUserID } from "@/server/users";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export interface DataItem {
-    name: string;
-    amount: number;
-    categories: string[];
-    date: Date;
+  id: string;
+  userId: string;
+  name: string;
+  amount: number;
+  categories: string[];
+  date: Date;
+  createdAt: Date;
 }
 
-export const addData = async (item: DataItem) => {
+export const addData = async (item: CreateDataItemInput) => {
 
     try {
         const userId = await getUserID();
@@ -23,7 +27,8 @@ export const addData = async (item: DataItem) => {
                 userId: userId,
                 date: item.date,
                 name: item.name,
-                amount: item.amount,
+                // Ensure numeric value is passed as string matching numeric column
+                amount: Number(item.amount).toFixed(2),
                 categories: item.categories,
             })
 
@@ -41,7 +46,7 @@ export const addData = async (item: DataItem) => {
     }
 }
 
-export const updateData = async (item: DataItem, id: string) => {
+export const updateData = async (item: CreateDataItemInput, id: string) => {
 
     try {
         const userId = await getUserID();
@@ -49,8 +54,8 @@ export const updateData = async (item: DataItem, id: string) => {
             .update(dataTable)
             .set({
                 name: item.name,
-                amount: item.amount,
-                categories: item.categories
+                amount: Number(item.amount).toFixed(2),
+                categories: item.categories,
             })
             .where(and(eq(dataTable.id, id), eq(dataTable.userId, userId)));
 
@@ -92,10 +97,13 @@ export const deleteData = async (id: string) => {
     }
 }
 
-export async function getItemsForUser() {
+export async function getItemsForUser(): Promise<DataItem[]> {
     const userId = await getUserID();
-    return db
-        .select()
-        .from(dataTable)
-        .where(eq(dataTable.userId, userId));
+    const rows = await db.select().from(dataTable).where(eq(dataTable.userId, userId));
+
+    return rows.map((r: any) => ({
+        ...r,
+        date: new Date(r.date),
+        amount: typeof r.amount === "string" ? Number(r.amount) : r.amount,
+    }));
 }
