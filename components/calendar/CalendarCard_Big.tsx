@@ -17,6 +17,10 @@ const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigPro
     <Card className="mx-auto w-fit p-0 border-white">
       <CardContent className="p-0">
         <Calendar
+          //2026 app start
+          startMonth={new Date("2026-01-01")}
+          //Current year +1 so you can "predict" or "plan" even for next year
+          endMonth={new Date(`${new Date().getFullYear()+1}-12-31`)}
           required
           mode="single"
           selected={selectedDate}

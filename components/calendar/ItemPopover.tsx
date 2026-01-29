@@ -53,13 +53,19 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
         },
     })
 
+
+    const onSubmitHandler = (data: AddNewItemFormSchema) => {
+        onSubmit(data);
+        form.reset();
+    }
+
     return (
         <Popover>
             <PopoverTrigger asChild>
                 { popoverTrigger }
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="w-70">
-                <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmitHandler)}>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <CustomController form={form} name="name" label="Name" type="text" placeholder="Name" />

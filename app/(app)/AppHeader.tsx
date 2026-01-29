@@ -10,11 +10,18 @@ const AppHeader = async () => {
       <div className="w-3/4 flex justify-between items-center">
         <div className="w-full flex items-center gap-40">
           <Logo boxSize="lg" fontSize="2xl" includeText={true} />
+          <div className="flex items-center gap-2">
           <Button asChild variant="primary">
             <Link href="/calendar">
               Calendar
             </Link>
           </Button>
+          <Button asChild variant="primary">
+            <Link href="/dashboard">
+              Dashboard
+            </Link>
+          </Button>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <LogoutButton />
