@@ -13,7 +13,7 @@ const DashboardPage = async () => {
     const items: DataItem[] = await getItemsForUser();
 
     return (
-        <div className="w-fit flex-col lg:flex-row gap-10 flex">
+        <div className="w-fit flex-col lg:flex-row gap-10 flex flex-1">
             <OverviewTable items={items} />
         </div>
     )
