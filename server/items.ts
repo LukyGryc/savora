@@ -1,9 +1,9 @@
 "use server";
 
-import { CreateDataItemInput } from "@/components/calendar/Tracking";
 import { db } from "@/db/drizzle";
 import { dataTable } from "@/db/schema";
 import { getUserID } from "@/server/users";
+import { CreateDataItemInput } from "@/types/itemTypes";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -17,10 +17,20 @@ export interface DataItem {
   createdAt: Date;
 }
 
+const userNotFound = {
+    success: false,
+    message: "User not found",
+};
+
 export const addData = async (item: CreateDataItemInput) => {
 
     try {
         const userId = await getUserID();
+
+        if(!userId) {
+            return userNotFound;
+        }
+        
         await db
             .insert(dataTable)
             .values({
@@ -50,6 +60,11 @@ export const updateData = async (item: CreateDataItemInput, id: string) => {
 
     try {
         const userId = await getUserID();
+
+        if(!userId) {
+            return userNotFound;
+        }
+
         await db
             .update(dataTable)
             .set({
@@ -79,6 +94,10 @@ export const deleteData = async (id: string) => {
 
         const userId = await getUserID();
 
+        if(!userId) {
+            return userNotFound;
+        }
+
         await db
             .delete(dataTable)
             .where(and(eq(dataTable.id, id), eq(dataTable.userId, userId)));
@@ -99,6 +118,7 @@ export const deleteData = async (id: string) => {
 
 export async function getItemsForUser(): Promise<DataItem[]> {
     const userId = await getUserID();
+
     const rows = await db.select().from(dataTable).where(eq(dataTable.userId, userId));
 
     return rows.map((r: any) => ({

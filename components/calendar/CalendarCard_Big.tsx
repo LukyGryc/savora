@@ -3,7 +3,7 @@ import { DataItem } from "@/server/items";
 //Had to name this file this way even though I don't know whether I will need a different calendar card, but CalendarCard was throwing error
 import { Calendar, CalendarDayButton } from "../ui/calendar"
 import { Card, CardContent } from "../ui/card"
-import { formatAmountCurrency, getItemsForDate } from "@/util/itemsUtil";
+import { formatAmountCurrency, getItemsForDate } from "@/lib/itemsUtil";
 
 interface CalendarCard_BigProps {
   selectedDate: Date;

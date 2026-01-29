@@ -5,5 +5,8 @@ export const formatAmountCurrency = (amount: number) => {
 }
 
 export const getItemsForDate = (items: DataItem[], date: Date) => {
-    return items.filter(item => item.date.toDateString() === date.toDateString());
+    return items.filter(item => {
+        const itemDate = new Date(item.date);
+        return itemDate.toISOString().slice(0, 10) === date.toISOString().slice(0, 10);
+    });
 }

@@ -4,21 +4,15 @@ import { format } from "date-fns"
 import { Separator } from "../ui/separator";
 import { CircleXIcon, Edit2, PlusIcon } from "lucide-react";
 import { addData, DataItem, deleteData, updateData } from "@/server/items";
-import { formatAmountCurrency, getItemsForDate } from "@/util/itemsUtil";
+import { formatAmountCurrency, getItemsForDate } from "@/lib/itemsUtil";
 import { toast } from "sonner";
 import ItemPopover, { AddNewItemFormSchema } from "./ItemPopover";
 import { Button } from "../ui/button";
+import { CreateDataItemInput } from "@/types/itemTypes";
 
 interface TrackingProps {
     selectedDate: Date;
     items: DataItem[];
-}
-
-export interface CreateDataItemInput {
-    name: string
-    amount: number
-    categories: string[]
-    date: Date
 }
 
 const Tracking = ({ selectedDate, items }: TrackingProps) => {

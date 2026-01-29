@@ -30,10 +30,11 @@ function CustomController<T extends FieldValues>({
           <Input
             {...field}
             onChange={(e) => {
-              if(type === "number" && isNaN(Number(e.target.value))) {
-                return field.onChange(0);
-              }
-              return field.onChange(type === "number" ? e.target.valueAsNumber : e.target.value);
+              if (type !== "number") return field.onChange(e.target.value)
+              if (e.target.value === "") return field.onChange(0)
+              const num = e.target.valueAsNumber
+              if (Number.isNaN(num)) return field.onChange(0)
+              return field.onChange(num)
             }}
             id={field.name}
             type={type}

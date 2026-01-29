@@ -9,7 +9,6 @@ const CalendarPage = async () => {
     return <div>You are not logged in</div>;
   }
 
-  // getItemsForUser already returns converted date and amount as number
   const items: DataItem[] = await getItemsForUser();
   
   return (
