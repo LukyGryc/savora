@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import AuthController from "./AuthController";
+import CustomController from "../common/CustomController";
 
 const formSchema = z.object({
   email: z.email(),
@@ -64,8 +64,8 @@ export function LoginForm({
           <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
 
-              <AuthController form={form} name="email" label="Email" type="email" placeholder="email@example.com" />
-              <AuthController form={form} name="password" label="Password" type="password" placeholder="Password" />
+              <CustomController form={form} name="email" label="Email" type="email" placeholder="email@example.com" />
+              <CustomController form={form} name="password" label="Password" type="password" placeholder="Password" />
 
               <Field>
                 <Button form="login-form" type="submit" variant="primary" disabled={form.formState.isSubmitting}>{ form.formState.isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In" }</Button>

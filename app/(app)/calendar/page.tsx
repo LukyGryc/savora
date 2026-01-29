@@ -1,14 +1,21 @@
-import { Metadata } from "next";
+import { getUserEmail } from "@/server/users";
+import CalendarContent from "./CalendarContent";
+import { DataItem, getItemsForUser } from "@/server/items";
 
-export const metadata: Metadata = {
-  title: 'Calendar',
-};
+const CalendarPage = async () => {
 
-const CalendarPage = () => {
+  const email = await getUserEmail();
+  if(!email) {
+    return <div>You are not logged in</div>;
+  }
+
+  const items: DataItem[] = await getItemsForUser();
   
   return (
-    <div>CalendarPage</div>
-  )
-}
+    <div className="bg-bg-primary w-fit flex-1 mx-auto py-10 content-center">
+      <CalendarContent items={items} />
+    </div>
+  );
+};
 
-export default CalendarPage
+export default CalendarPage;

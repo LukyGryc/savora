@@ -2,21 +2,21 @@ import { Controller, FieldValues, Path, UseFormReturn } from "react-hook-form"
 import { Field, FieldError, FieldLabel } from "../ui/field"
 import { Input } from "../ui/input"
 
-type AuthControllerProps<T extends FieldValues> = {
+type CustomControllerProps<T extends FieldValues> = {
   form: UseFormReturn<T>
   name: Path<T>
   label: string
-  type?: string
+  type?: "text" | "number" | "email" | "password"
   placeholder?: string
 }
 
-function AuthController<T extends FieldValues>({
+function CustomController<T extends FieldValues>({
   form,
   name,
   label,
   type = "text",
   placeholder,
-}: AuthControllerProps<T>) {
+}: CustomControllerProps<T>) {
   return (
     <Controller
       control={form.control}
@@ -29,8 +29,16 @@ function AuthController<T extends FieldValues>({
 
           <Input
             {...field}
+            onChange={(e) => {
+              if (type !== "number") return field.onChange(e.target.value)
+              if (e.target.value === "") return field.onChange(0)
+              const num = e.target.valueAsNumber
+              if (Number.isNaN(num)) return field.onChange(0)
+              return field.onChange(num)
+            }}
             id={field.name}
             type={type}
+            step={type === "number" ? 0.01 : undefined}
             placeholder={placeholder}
             className="text-white"
           />
@@ -44,4 +52,4 @@ function AuthController<T extends FieldValues>({
   )
 }
 
-export default AuthController
+export default CustomController
