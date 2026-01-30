@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { type ChartConfig } from "@/components/ui/chart"
 import { categories, getDashboardData, getDateRange, getMonthName, getYears } from "@/lib/dashboard"
 import { DataItem } from "@/server/items"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const chartConfig = {
   amount: {
@@ -15,16 +15,41 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ChartExample({ items }: { items: DataItem[] }) {
-
-  const [selectedMonth, setSelectedMonth] = useState("0");
-  const [selectedYear, setSelectedYear] = useState("2026");
-  const [selectedChart, setSelectedChart] = useState<("pie" | "bar")>("pie");
-
+export function DashboardChartCard({ items, className }: { items: DataItem[], className?: string }) {
   const dashboardData = getDashboardData(items);
   const years = getYears(dashboardData);
   const dates = getDateRange(dashboardData);
+  const latest = dates[dates.length - 1];
 
+  const [selectedMonth, setSelectedMonth] = useState(latest.month);
+  const [selectedYear, setSelectedYear] = useState(latest.year);
+  const [selectedChart, setSelectedChart] = useState<("pie" | "bar")>("bar");
+
+  //This is here just to determine whether to use horizontal or vertical bar chart
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const observedElement = useRef(null);
+
+  useEffect(() => {
+    if (observedElement.current) {
+      const observer = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          setDimensions({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
+        }
+      });
+
+      observer.observe(observedElement.current);
+
+      // Cleanup function
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, []);
+  //---
+  
   const dataForChart = dashboardData
     .filter((data) => data.amount[selectedYear]?.[selectedMonth] !== undefined)
     .reduce((acc, item) => {
@@ -47,21 +72,23 @@ export function ChartExample({ items }: { items: DataItem[] }) {
   }
 
   return (
-    <Card>
+    <Card ref={observedElement} className={className}>
       <CardHeader>
         <CardTitle>Your spending visualized</CardTitle>
         <CardDescription>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
             <div className="flex gap-2">
-              <SelectCustom
-                items={years.map((year) => ({ value: year, label: year }))}
-                value={selectedYear}
-                onChange={onYearChange}
-              />
               <SelectCustom
                 items={dates.filter(({ year }) => year === selectedYear).map(({ month }) => ({ value: month, label: getMonthName(month) }))}
                 value={selectedMonth}
                 onChange={(value) => setSelectedMonth(value)}
+                groupLabel="Month"
+              />
+              <SelectCustom
+                items={years.map((year) => ({ value: year, label: year }))}
+                value={selectedYear}
+                onChange={onYearChange}
+                groupLabel="Year"
               />
             </div>
             <div>
@@ -69,6 +96,7 @@ export function ChartExample({ items }: { items: DataItem[] }) {
                 items={[{ value: "pie", label: "Pie Chart" }, { value: "bar", label: "Bar Chart" }]}
                 value={selectedChart}
                 onChange={(value) => setSelectedChart(value as "pie" | "bar")}
+                groupLabel="Chart Type"
               />
             </div>
           </div>
@@ -76,9 +104,22 @@ export function ChartExample({ items }: { items: DataItem[] }) {
       </CardHeader>
       <CardContent>
         {selectedChart === "pie" ? (
-          <PieChartCustom data={Object.values(dataForChart)} config={chartConfig} dataKey="amount" nameKey="category" className="h-[250px] w-[400px]" />
+          <PieChartCustom
+            data={Object.values(dataForChart)}
+            config={chartConfig}
+            dataKey="amount"
+            nameKey="category"
+            className="min-h-[150px]"
+          />
         ) : (
-          <BarChartCustom data={Object.values(dataForChart)} config={chartConfig} dataKey="amount" nameKey="category" className="h-[250px] w-[400px]" />
+          <BarChartCustom
+            data={Object.values(dataForChart)}
+            config={chartConfig}
+            dataKey="amount"
+            nameKey="category"
+            className="min-h-[150px] w-full"
+            type={dimensions.width > 500 ? "horizontal" : "vertical"}
+          />
         )}
       </CardContent>
     </Card>

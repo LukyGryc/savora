@@ -50,7 +50,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                { popoverTrigger }
+                {popoverTrigger}
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="w-70">
                 <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmitHandler)}>
@@ -63,7 +63,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                                 control={form.control}
                                 name="categories"
                                 render={({ field, fieldState }) => (
-                                    <Field data-invalid={fieldState.invalid}>
+                                    <Field data-invalid={fieldState.invalid} className="w-fit">
                                         <FieldLabel className="text-white">
                                             Category
                                         </FieldLabel>
@@ -72,7 +72,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                                             value={field.value?.[0] ?? categories[0]}
                                             onValueChange={(value) => field.onChange([value])}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="">
                                                 <SelectValue placeholder="Select category" />
                                             </SelectTrigger>
 
@@ -97,7 +97,9 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
 
                         </div>
                     </div>
-                    <Button variant="primary" className="mt-4" form="add-new-item-form" type="submit">Add Item</Button>
+                    <div>
+                        <Button variant="primary" className="mt-4 ml-auto flex" form="add-new-item-form" type="submit">Add Item</Button>
+                    </div>
                 </form>
             </PopoverContent>
         </Popover>

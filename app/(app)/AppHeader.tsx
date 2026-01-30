@@ -8,9 +8,8 @@ const AppHeader = async () => {
   return (
     <div className="bg-bg-primary/90 w-full h-16 flex justify-center top-0 z-50 backdrop-blur sticky border-b border-white">
       <div className="w-3/4 flex justify-between items-center">
-        <div className="w-full flex items-center gap-40">
-          <Logo boxSize="lg" fontSize="2xl" includeText={true} />
-          <div className="flex items-center gap-2">
+        <Logo boxSize="lg" fontSize="2xl" includeText={true} />
+{ /*       <div className="flex items-center gap-2">
           <Button asChild variant="primary">
             <Link href="/calendar">
               Calendar
@@ -21,11 +20,8 @@ const AppHeader = async () => {
               Dashboard
             </Link>
           </Button>
-          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <LogoutButton />
-        </div>
+        <LogoutButton />*/}
       </div>
     </div>
   );

@@ -75,7 +75,8 @@ function Calendar({
         ),
         dropdown_root: cn(
           "relative has-focus:border-primary border-2 border-input shadow-sm has-focus:ring-primary/30 has-focus:ring-[3px] rounded-lg px-3 py-2 min-h-[44px] md:min-h-[48px] bg-background hover:border-primary/50 transition-colors",
-          defaultClassNames.dropdown_root
+          defaultClassNames.dropdown_root,
+          "scale-70 md:scale-90 lg:scale-100"
         ),
         dropdown: cn(
           "absolute bg-popover inset-0 opacity-0",
@@ -86,7 +87,7 @@ function Calendar({
           captionLayout === "label"
             ? "text-base md:text-lg"
             : "rounded-lg pl-3 pr-2 flex items-center gap-2 text-base md:text-lg h-12 md:h-14 [&>svg]:text-muted-foreground [&>svg]:size-4 md:[&>svg]:size-5",
-          defaultClassNames.caption_label
+          defaultClassNames.caption_label,
         ),
         table: "w-full border-collapse",
         weekdays: cn("flex", defaultClassNames.weekdays),

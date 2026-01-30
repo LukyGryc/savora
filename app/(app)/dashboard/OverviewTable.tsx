@@ -5,7 +5,7 @@ import { formatAmountCurrency } from "@/lib/itemsUtil"
 import { getDashboardData, getDateRange, getMonthName, getYears, MonthColumn } from "@/lib/dashboard"
 
 
-const OverviewTable = ({ items }: { items: DataItem[] }) => {
+const OverviewTable = ({ items, className }: { items: DataItem[], className?: string }) => {
 
     const data = getDashboardData(items);
     const years = getYears(data);
@@ -21,7 +21,7 @@ const OverviewTable = ({ items }: { items: DataItem[] }) => {
     )
 
     return (
-        <Card>
+        <Card className={className}>
             <CardHeader>
                 <CardTitle>Your spending overview</CardTitle>
             </CardHeader>

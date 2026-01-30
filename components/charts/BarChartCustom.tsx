@@ -1,5 +1,5 @@
-import { Bar, BarChart, Legend, XAxis } from "recharts"
-import { ChartConfig, ChartContainer, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "../ui/chart"
+import { Bar, BarChart, Legend, XAxis, YAxis } from "recharts"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart"
 import { formatAmountCurrency } from "@/lib/itemsUtil"
 
 interface Props {
@@ -11,20 +11,35 @@ interface Props {
     config: ChartConfig,
     dataKey: string,
     nameKey: string,
-    className?: string
+    className?: string,
+    type: "horizontal" | "vertical"
 }
 
-const BarChartCustom = ({ data, config, dataKey, nameKey, className }: Props) => {
+const BarChartCustom = ({ data, config, dataKey, nameKey, className, type }: Props) => {
+
+    const getXAxis = () => {
+        if (type === "vertical") {
+            return <XAxis type="number" dataKey={dataKey} />
+        } else {
+            return <XAxis type="category" dataKey={nameKey} />
+        }
+    }
+
+    const getYAxis = () => {
+        if (type === "vertical") {
+            return <YAxis type="category" dataKey={nameKey} />
+        } else {
+            return <YAxis type="number" dataKey={dataKey} />
+        }
+    }
+
     return (
         <ChartContainer config={config} className={className}>
-            <BarChart accessibilityLayer data={data} >
-                <XAxis
-                    dataKey={nameKey}
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                />
-
+            <BarChart
+                accessibilityLayer
+                data={data}
+                layout={type}
+            >
                 <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel formatter={(value) => (
@@ -34,6 +49,8 @@ const BarChartCustom = ({ data, config, dataKey, nameKey, className }: Props) =>
                         </div>
                     )} />}
                 />
+                {getXAxis()}
+                {getYAxis()}
                 <Bar dataKey={dataKey} radius={4} />
             </BarChart>
         </ChartContainer>
