@@ -4,6 +4,11 @@ import { getUserEmail } from "@/server/users";
 import OverviewTable from "../../../components/dashboard/OverviewTable";
 import { DashboardChartCard } from "../../../components/dashboard/DashboardChartCard";
 import EmptyDashboard from "@/components/dashboard/EmptyDashboard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'Dashboard',
+};
 
 const DashboardPage = async () => {
 

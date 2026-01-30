@@ -1,6 +1,11 @@
 import { getUserEmail } from "@/server/users";
 import CalendarContent from "./CalendarContent";
 import { getItemsForUser } from "@/server/items";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Calendar',
+};
 
 const CalendarPage = async () => {
 

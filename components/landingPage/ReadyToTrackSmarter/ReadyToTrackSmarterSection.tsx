@@ -4,6 +4,7 @@ import SectionDescription from "@/components/layout/SectionDescription"
 import SectionHeader from "@/components/layout/SectionHeader"
 import { Button } from "@/components/ui/button"
 import SectionContent from "@/components/layout/SectionContent"
+import Link from "next/link"
 
 const ReadyToTrackSmarterSection = () => {
   return (
@@ -13,8 +14,8 @@ const ReadyToTrackSmarterSection = () => {
           <SectionTitle title="Ready to track smarter?" />
           <SectionDescription description="Start building better spending habits today." />
         </SectionHeader>
-        <Button variant="primary" className="w-fit mx-auto text-lg">
-          Get Started
+        <Button asChild variant="primary" className="w-fit mx-auto text-lg">
+          <Link href="/signup">Get Started</Link>
         </Button>
       </SectionContent>
     </LandingPageSection>
