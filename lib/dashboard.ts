@@ -1,4 +1,5 @@
 import { DataItem } from "@/server/items"
+import { format } from "date-fns"
 
 export interface MonthColumn {
     year: string
@@ -18,6 +19,33 @@ export interface CategoryData {
     category: string
     amount: AmountGrid
     total: number
+}
+
+export const getMonthName = (month: string) => {
+    return format(new Date(2026, parseInt(month, 10), 1), "MMMM")
+}
+
+export const getYears = (data: CategoryData[]) => {
+    return Array.from(
+        new Set(
+            data.flatMap((r) => Object.keys(r.amount))
+        )
+    ).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+}
+
+export const getDateRange = (data: CategoryData[]) => {
+
+    return getYears(data).flatMap((year) => {
+        const monthKeys = Array.from(
+            new Set(
+                data.flatMap(r => Object.keys(r.amount[year] ?? {}))
+            )
+        );
+    
+        return monthKeys
+            .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+            .map((month) => ({ year, month }))
+    })
 }
 
 export const getDashboardData = (items: DataItem[]) => {

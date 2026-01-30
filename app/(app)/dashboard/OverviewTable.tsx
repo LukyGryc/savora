@@ -1,32 +1,15 @@
-import { format } from "date-fns"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DataItem } from "@/server/items"
 import { formatAmountCurrency } from "@/lib/itemsUtil"
-import { getDashboardData, MonthColumn } from "@/lib/dashboard"
+import { getDashboardData, getDateRange, getMonthName, getYears, MonthColumn } from "@/lib/dashboard"
 
 
 const OverviewTable = ({ items }: { items: DataItem[] }) => {
 
     const data = getDashboardData(items);
-
-    const years = Array.from(
-        new Set(
-            data.flatMap((r) => Object.keys(r.amount))
-        )
-    ).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
-
-    const columns: MonthColumn[] = years.flatMap((year) => {
-        const monthKeys = Array.from(
-            new Set(
-                data.flatMap(r => Object.keys(r.amount[year] ?? {}))
-            )
-        );
-
-        return monthKeys
-            .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
-            .map((month) => ({ year, month }))
-    })
+    const years = getYears(data);
+    const columns = getDateRange(data);
 
     const totalByColumn = columns.map(({ year, month }) =>
         data.reduce((sum, row) => sum + (row.amount[year]?.[month] ?? 0), 0)
@@ -67,7 +50,7 @@ const OverviewTable = ({ items }: { items: DataItem[] }) => {
                                 {columns.map(({ year, month }) => {
                                     return (
                                         <TableHead className="text-center" key={`${month}.${year}_columns`}>
-                                            {format(new Date(2026, parseInt(month, 10), 1), "MMMM")}
+                                            {getMonthName(month)}
                                         </TableHead>
                                     )
                                 })}
@@ -78,10 +61,6 @@ const OverviewTable = ({ items }: { items: DataItem[] }) => {
                                 <TableRow key={category}>
                                     <TableCell className="text-center">{category}</TableCell>
                                     {columns.map(({ year, month }, i) => {
-                                        if (i === 0) {
-                                            console.log(category, amount, total)
-                                            console.log(month, year)
-                                        }
                                         return <TableCell className="text-center" key={`${month}.${year}_data`}>
                                             {amount[year]?.[month] != null
                                                 ? formatAmountCurrency(amount[year][month])

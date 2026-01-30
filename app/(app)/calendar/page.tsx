@@ -1,6 +1,6 @@
 import { getUserEmail } from "@/server/users";
 import CalendarContent from "./CalendarContent";
-import { DataItem, getItemsForUser } from "@/server/items";
+import { getItemsForUser } from "@/server/items";
 
 const CalendarPage = async () => {
 
@@ -9,7 +9,8 @@ const CalendarPage = async () => {
     return <div>You are not logged in</div>;
   }
 
-  const items: DataItem[] = await getItemsForUser();
+  //Just testing the type from tutorial, could very much be DataItem[], but this at least saves me import, also this doesn't have to be typed at all since it infers the type from the function
+  const items: Awaited<ReturnType<typeof getItemsForUser>> = await getItemsForUser();
   
   return (
     <div className="bg-bg-primary w-fit flex-1 mx-auto py-10 content-center">

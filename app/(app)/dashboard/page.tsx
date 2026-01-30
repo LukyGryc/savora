@@ -2,6 +2,7 @@
 import { DataItem, getItemsForUser } from "@/server/items";
 import { getUserEmail } from "@/server/users";
 import OverviewTable from "./OverviewTable";
+import { ChartExample } from "./BarChart";
 
 const DashboardPage = async () => {
 
@@ -15,6 +16,7 @@ const DashboardPage = async () => {
     return (
         <div className="w-fit flex-col lg:flex-row gap-10 flex flex-1">
             <OverviewTable items={items} />
+            <ChartExample items={items} />
         </div>
     )
 }
