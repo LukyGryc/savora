@@ -27,7 +27,11 @@ const BarChartCustom = ({ data, config, dataKey, nameKey, className, type }: Pro
 
     const getYAxis = () => {
         if (type === "vertical") {
-            return <YAxis type="category" dataKey={nameKey} />
+            return <YAxis
+                type="category"
+                dataKey={nameKey}
+                tickFormatter={(value) => value.length > 8 ? `${value.slice(0, 8)}...` : value}
+            />
         } else {
             return <YAxis type="number" dataKey={dataKey} />
         }

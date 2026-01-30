@@ -11,6 +11,7 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
     const years = getYears(data);
     const columns = getDateRange(data);
 
+    const borderColorMain = "border-white/70";
     const totalByColumn = columns.map(({ year, month }) =>
         data.reduce((sum, row) => sum + (row.amount[year]?.[month] ?? 0), 0)
     )
@@ -20,35 +21,53 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
         (year) => columns.filter((c) => c.year === year).length
     )
 
+    console.log(columns)
+
+
+    const applyBorder = ({ year, month }: ReturnType<typeof getDateRange>[number]): string => {
+        //Columns are already sorted by year, so we can just find the first and last month of the year
+        const firstMonthOfYear = columns.find((c) => c.year === year)?.month;
+        const lastMonthOfYear = columns.findLast((c) => c.year === year)?.month;
+
+        if (month === firstMonthOfYear) {
+            return `border-l ${borderColorMain}`;
+        }
+        if (month === lastMonthOfYear) {
+            return `border-r ${borderColorMain}`;
+        }
+
+        return "";
+    }
+
     return (
         <Card className={className}>
             <CardHeader>
                 <CardTitle>Your spending overview</CardTitle>
             </CardHeader>
-            <CardContent>
-                <Table>
+            <CardContent className="h-full p-8">
+                <Table className="h-full">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-center" rowSpan={2}>
+                            <TableHead className={`text-center border-b ${borderColorMain}`} rowSpan={2}>
                                 Category
                             </TableHead>
                             {years.map((year) => (
                                 <TableHead
-                                    className="text-center"
+                                    className="text-center border-b border-white/20"
                                     key={year}
                                     colSpan={yearColSpans[years.indexOf(year)]}
                                 >
                                     {year}
                                 </TableHead>
                             ))}
-                            <TableHead className="text-center" rowSpan={2}>
+                            <TableHead className={`text-center border-b ${borderColorMain}`} rowSpan={2}>
                                 Total
                             </TableHead>
                         </TableRow>
                         <TableRow>
                             {columns.map(({ year, month }) => {
                                 return (
-                                    <TableHead className="text-center" key={`${month}.${year}_columns`}>
+                                    <TableHead className={`text-center border-b ${borderColorMain}`} key={`${month}.${year}_columns`}>
                                         {getMonthName(month)}
                                     </TableHead>
                                 )
@@ -57,10 +76,13 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
                     </TableHeader>
                     <TableBody>
                         {data.map(({ category, amount, total }) => (
-                            <TableRow key={category}>
+                            <TableRow key={category} className="border-b border-white/20">
                                 <TableCell className="text-center">{category}</TableCell>
-                                {columns.map(({ year, month }, i) => {
-                                    return <TableCell className="text-center" key={`${month}.${year}_data`}>
+                                {columns.map(({ year, month }) => {
+                                    return <TableCell
+                                        className={`text-center ${applyBorder({ year, month })}`}
+                                        key={`${month}.${year}_data`}
+                                    >
                                         {amount[year]?.[month] != null
                                             ? formatAmountCurrency(amount[year][month])
                                             : "-"
@@ -72,14 +94,17 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
                                 </TableCell>
                             </TableRow>
                         ))}
-                        <TableRow className="font-medium bg-muted/50">
+                        <TableRow className="font-medium bg-primary/30 hover:bg-primary/50">
                             <TableCell className="text-center">Total</TableCell>
                             {totalByColumn.map((sum, i) => (
-                                <TableCell className="text-center" key={`${columns[i].year}.${columns[i].month}_total`}>
+                                <TableCell
+                                    className={`text-center ${applyBorder({ year: columns[i].year, month: columns[i].month })}`}
+                                    key={`${columns[i].year}.${columns[i].month}_total`}
+                                >
                                     {sum > 0 ? formatAmountCurrency(sum) : "-"}
                                 </TableCell>
                             ))}
-                            <TableCell className="text-center">
+                            <TableCell className={`text-center ${borderColorMain}`}>
                                 {formatAmountCurrency(grandTotal)}
                             </TableCell>
                         </TableRow>

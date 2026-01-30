@@ -3,7 +3,8 @@ import { toast } from "sonner";
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client";
-const LogoutButton = () => {
+
+const LogoutButton = ({ onClick }: { onClick?: () => void }) => {
 
   const router = useRouter()
 
@@ -18,7 +19,7 @@ const LogoutButton = () => {
   }
   return (
     <form action={handleLogout}>
-      <Button variant="destructive" type="submit">Logout</Button>
+      <Button variant="destructive" type="submit" onClick={onClick} >Logout</Button>
     </form>
   )
 }

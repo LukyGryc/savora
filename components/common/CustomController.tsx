@@ -40,7 +40,7 @@ function CustomController<T extends FieldValues>({
             type={type}
             step={type === "number" ? 0.01 : undefined}
             placeholder={placeholder}
-            className="text-white"
+            className="text-white border border-white"
           />
 
           {fieldState.invalid && (
