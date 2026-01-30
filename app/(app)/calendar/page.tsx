@@ -13,7 +13,7 @@ const CalendarPage = async () => {
   const items: Awaited<ReturnType<typeof getItemsForUser>> = await getItemsForUser();
   
   return (
-    <div className="bg-bg-primary flex-1 mx-auto py-10">
+    <div className="bg-bg-primary flex-1 mx-auto overflow-y-auto py-10">
       <CalendarContent items={items} />
     </div>
   );

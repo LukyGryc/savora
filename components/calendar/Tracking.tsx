@@ -63,16 +63,12 @@ const Tracking = ({ selectedDate, items }: TrackingProps) => {
     const itemsForDate = getItemsForDate(items, selectedDate);
 
     return (
-        <Card className="flex flex-col lg:w-[400px] w-full">
+        <Card className="flex flex-col lg:w-[400px] w-full max-h-[80vh] overflow-y-auto">
             <CardHeader>
-                <CardTitle>Selected Day</CardTitle>
+                <CardTitle className="text-base md:text-xl">{format(selectedDate, "EEEE, MMMM d, yyyy")}</CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="space-y-2">
-                    <p className="sm:text-md md:text-base font-medium text-card-foreground">
-                        {format(selectedDate, "EEEE, MMMM d, yyyy")}
-                    </p>
-                </div>
+
                 <Separator className="my-4" />
                 {itemsForDate.map((item) => (
                     <div key={item.id} className="flex flex-row gap-2 justify-between border border-border border-muted-foreground rounded-md p-3 mb-2 pb-2 hover:bg-accent/50 transition-colors text-sm sm:text-base">

@@ -98,7 +98,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                         </div>
                     </div>
                     <div>
-                        <Button variant="primary" className="mt-4 ml-auto flex" form="add-new-item-form" type="submit">Add Item</Button>
+                        <Button variant="primary" className="mt-4 ml-auto flex" form="add-new-item-form" type="submit">{ item ? "Update Item" : "Add Item" }</Button>
                     </div>
                 </form>
             </PopoverContent>
