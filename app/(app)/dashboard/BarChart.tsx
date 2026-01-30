@@ -1,19 +1,17 @@
 "use client"
 
+import BarChartCustom from "@/components/charts/BarChartCustom"
+import PieChartCustom from "@/components/charts/PieChartCustom"
 import SelectCustom from "@/components/layout/SelectCustom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getDashboardData, getDateRange, getMonthName, getYears } from "@/lib/dashboard"
-import { formatAmountCurrency } from "@/lib/itemsUtil"
+import { type ChartConfig } from "@/components/ui/chart"
+import { categories, getDashboardData, getDateRange, getMonthName, getYears } from "@/lib/dashboard"
 import { DataItem } from "@/server/items"
 import { useState } from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 const chartConfig = {
   amount: {
-    label: "Amount",
-    color: "#2563eb"
+    label: "Amount"
   }
 } satisfies ChartConfig
 
@@ -21,6 +19,7 @@ export function ChartExample({ items }: { items: DataItem[] }) {
 
   const [selectedMonth, setSelectedMonth] = useState("0");
   const [selectedYear, setSelectedYear] = useState("2026");
+  const [selectedChart, setSelectedChart] = useState<("pie" | "bar")>("pie");
 
   const dashboardData = getDashboardData(items);
   const years = getYears(dashboardData);
@@ -31,12 +30,16 @@ export function ChartExample({ items }: { items: DataItem[] }) {
     .reduce((acc, item) => {
       const category = item.category;
       if (!acc[category]) {
-        acc[category] = { amount: item.amount[selectedYear]?.[selectedMonth] ?? 0, category };
+        acc[category] = {
+          amount: item.amount[selectedYear]?.[selectedMonth] ?? 0,
+          category,
+          fill: categories.find(({ name }) => name === category)?.fill ?? "var(--color-primary)"
+        };
       } else {
         acc[category].amount += item.amount[selectedYear]?.[selectedMonth] ?? 0;
       }
       return acc;
-    }, {} as Record<string, { amount: number, category: string }>)
+    }, {} as Record<string, { amount: number, category: string, fill: string }>)
 
   const onYearChange = (value: string) => {
     setSelectedYear(value);
@@ -44,49 +47,39 @@ export function ChartExample({ items }: { items: DataItem[] }) {
   }
 
   return (
-    <Card className="h-fit w-full bg-secondary">
+    <Card>
       <CardHeader>
         <CardTitle>Your spending visualized</CardTitle>
         <CardDescription>
-          <div className="flex gap-2">
-            <SelectCustom
-              items={years.map((year) => ({ value: year, label: year }))}
-              value={selectedYear}
-              onChange={onYearChange}
-            />
-            <SelectCustom
-              items={dates.filter(({ year }) => year === selectedYear).map(({ month }) => ({ value: month, label: getMonthName(month) }))}
-              value={selectedMonth}
-              onChange={(value) => setSelectedMonth(value)}
-            />
+          <div className="flex justify-between items-center">
+            <div className="flex gap-2">
+              <SelectCustom
+                items={years.map((year) => ({ value: year, label: year }))}
+                value={selectedYear}
+                onChange={onYearChange}
+              />
+              <SelectCustom
+                items={dates.filter(({ year }) => year === selectedYear).map(({ month }) => ({ value: month, label: getMonthName(month) }))}
+                value={selectedMonth}
+                onChange={(value) => setSelectedMonth(value)}
+              />
+            </div>
+            <div>
+              <SelectCustom
+                items={[{ value: "pie", label: "Pie Chart" }, { value: "bar", label: "Bar Chart" }]}
+                value={selectedChart}
+                onChange={(value) => setSelectedChart(value as "pie" | "bar")}
+              />
+            </div>
           </div>
         </CardDescription>
       </CardHeader>
       <CardContent>
-
-        <ChartContainer config={chartConfig} className="min-h-[200px]">
-          <BarChart accessibilityLayer data={Object.values(dataForChart)} >
-            <XAxis
-              dataKey="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel formatter={(value) => (
-                <div className="flex flex-col gap-2">
-                  <span>{chartConfig.amount.label}</span>
-                  <span>{formatAmountCurrency(value as number)}</span>
-                </div>
-              )} />}
-            />
-
-            <Bar dataKey="amount" fill={`var(--color-primary)`} radius={4} />
-
-          </BarChart>
-        </ChartContainer>
+        {selectedChart === "pie" ? (
+          <PieChartCustom data={Object.values(dataForChart)} config={chartConfig} dataKey="amount" nameKey="category" className="h-[250px] w-[400px]" />
+        ) : (
+          <BarChartCustom data={Object.values(dataForChart)} config={chartConfig} dataKey="amount" nameKey="category" className="h-[250px] w-[400px]" />
+        )}
       </CardContent>
     </Card>
   )

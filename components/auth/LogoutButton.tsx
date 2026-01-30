@@ -18,7 +18,7 @@ const LogoutButton = () => {
   }
   return (
     <form action={handleLogout}>
-      <Button type="submit">Logout</Button>
+      <Button variant="destructive" type="submit">Logout</Button>
     </form>
   )
 }

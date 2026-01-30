@@ -21,74 +21,72 @@ const OverviewTable = ({ items }: { items: DataItem[] }) => {
     )
 
     return (
-        <div className="flex flex-col p-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Your spending overview</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="text-center" rowSpan={2}>
-                                    Category
+        <Card>
+            <CardHeader>
+                <CardTitle>Your spending overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="text-center" rowSpan={2}>
+                                Category
+                            </TableHead>
+                            {years.map((year) => (
+                                <TableHead
+                                    className="text-center"
+                                    key={year}
+                                    colSpan={yearColSpans[years.indexOf(year)]}
+                                >
+                                    {year}
                                 </TableHead>
-                                {years.map((year) => (
-                                    <TableHead
-                                        className="text-center"
-                                        key={year}
-                                        colSpan={yearColSpans[years.indexOf(year)]}
-                                    >
-                                        {year}
-                                    </TableHead>
-                                ))}
-                                <TableHead className="text-center" rowSpan={2}>
-                                    Total
-                                </TableHead>
-                            </TableRow>
-                            <TableRow>
-                                {columns.map(({ year, month }) => {
-                                    return (
-                                        <TableHead className="text-center" key={`${month}.${year}_columns`}>
-                                            {getMonthName(month)}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {data.map(({ category, amount, total }) => (
-                                <TableRow key={category}>
-                                    <TableCell className="text-center">{category}</TableCell>
-                                    {columns.map(({ year, month }, i) => {
-                                        return <TableCell className="text-center" key={`${month}.${year}_data`}>
-                                            {amount[year]?.[month] != null
-                                                ? formatAmountCurrency(amount[year][month])
-                                                : "-"
-                                            }
-                                        </TableCell>
-                                    })}
-                                    <TableCell className="text-center font-medium">
-                                        {formatAmountCurrency(total)}
-                                    </TableCell>
-                                </TableRow>
                             ))}
-                            <TableRow className="font-medium bg-muted/50">
-                                <TableCell className="text-center">Total</TableCell>
-                                {totalByColumn.map((sum, i) => (
-                                    <TableCell className="text-center" key={`${columns[i].year}.${columns[i].month}_total`}>
-                                        {sum > 0 ? formatAmountCurrency(sum) : "-"}
+                            <TableHead className="text-center" rowSpan={2}>
+                                Total
+                            </TableHead>
+                        </TableRow>
+                        <TableRow>
+                            {columns.map(({ year, month }) => {
+                                return (
+                                    <TableHead className="text-center" key={`${month}.${year}_columns`}>
+                                        {getMonthName(month)}
+                                    </TableHead>
+                                )
+                            })}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map(({ category, amount, total }) => (
+                            <TableRow key={category}>
+                                <TableCell className="text-center">{category}</TableCell>
+                                {columns.map(({ year, month }, i) => {
+                                    return <TableCell className="text-center" key={`${month}.${year}_data`}>
+                                        {amount[year]?.[month] != null
+                                            ? formatAmountCurrency(amount[year][month])
+                                            : "-"
+                                        }
                                     </TableCell>
-                                ))}
-                                <TableCell className="text-center">
-                                    {formatAmountCurrency(grandTotal)}
+                                })}
+                                <TableCell className="text-center font-medium">
+                                    {formatAmountCurrency(total)}
                                 </TableCell>
                             </TableRow>
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
+                        ))}
+                        <TableRow className="font-medium bg-muted/50">
+                            <TableCell className="text-center">Total</TableCell>
+                            {totalByColumn.map((sum, i) => (
+                                <TableCell className="text-center" key={`${columns[i].year}.${columns[i].month}_total`}>
+                                    {sum > 0 ? formatAmountCurrency(sum) : "-"}
+                                </TableCell>
+                            ))}
+                            <TableCell className="text-center">
+                                {formatAmountCurrency(grandTotal)}
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </CardContent>
+        </Card>
     )
 }
 

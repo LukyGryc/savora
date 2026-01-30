@@ -9,25 +9,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { JSX } from "react";
 import { DataItem } from "@/server/items";
+import { categories } from "@/lib/dashboard";
 
 interface Props {
     popoverTrigger: JSX.Element,
     onSubmit: (data: AddNewItemFormSchema) => void
     item?: DataItem
 }
-
-//TODO: Make categories user specific
-const categories = [
-    "Food",
-    "Transportation",
-    "Housing",
-    "Utilities",
-    "Entertainment",
-    "Health",
-    "Education",
-    "Travel",
-    "Other"
-];
 
 const formSchema = z.object({
     name: z
@@ -49,7 +37,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
         defaultValues: {
             name: item?.name ?? "",
             amount: item?.amount ?? 1,
-            categories: item?.categories ?? [categories[0]],
+            categories: item?.categories ?? [categories[0].name],
         },
     })
 
@@ -91,9 +79,9 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                                             <SelectContent>
                                                 <SelectGroup>
                                                     <SelectLabel>Categories</SelectLabel>
-                                                    {categories.map((category) => (
-                                                        <SelectItem key={category} value={category}>
-                                                            {category}
+                                                    {categories.map(({ name }) => (
+                                                        <SelectItem key={name} value={name}>
+                                                            {name}
                                                         </SelectItem>
                                                     ))}
                                                 </SelectGroup>

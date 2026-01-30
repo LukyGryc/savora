@@ -21,6 +21,46 @@ export interface CategoryData {
     total: number
 }
 
+//TODO: Make categories user specific
+export const categories = [
+    {
+        name: "Food",
+        fill: "var(--color-primary)"
+    },
+    {
+        name: "Transportation",
+        fill: "#65E0BF"
+    },
+    {
+        name: "Housing",
+        fill: "#55DBCB"
+    },
+    {
+        name: "Utilities",
+        fill: "#47BFBD"
+    },
+    {
+        name: "Entertainment",
+        fill: "#39A2AE"
+    },
+    {
+        name: "Health",
+        fill: "#418291"
+    },
+    {
+        name: "Education",
+        fill: "#486173"
+    },
+    {
+        name: "Travel",
+        fill: "#4F4055"
+    },
+    {
+        name: "Other",
+        fill: "#533046"
+    }
+];
+
 export const getMonthName = (month: string) => {
     return format(new Date(2026, parseInt(month, 10), 1), "MMMM")
 }
