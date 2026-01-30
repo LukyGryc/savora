@@ -4,6 +4,7 @@ import { DataItem } from "@/server/items";
 import { Calendar, CalendarDayButton } from "../ui/calendar"
 import { Card, CardContent } from "../ui/card"
 import { formatAmountCurrency, getItemsForDate } from "@/lib/itemsUtil";
+import { getMonthName } from "@/lib/dashboard";
 
 interface CalendarCard_BigProps {
   selectedDate: Date;
@@ -14,20 +15,22 @@ interface CalendarCard_BigProps {
 const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigProps) => {
 
   return (
-    <Card className="mx-auto w-fit p-0 border-white">
+    <Card className="w-fit p-0 border-white">
       <CardContent className="p-0">
         <Calendar
+          //2026 app start
+          startMonth={new Date("2026-01-01")}
+          //Current year +1 so you can "predict" or "plan" even for next year
+          endMonth={new Date(`${new Date().getFullYear()+1}-12-31`)}
           required
           mode="single"
           selected={selectedDate}
           onSelect={onSelect}
           numberOfMonths={1}
           captionLayout="dropdown"
-          className="[--cell-size:--spacing(16)] md:[--cell-size:--spacing(24)]"
+          className="[--cell-size:--spacing(8)] sm:[--cell-size:--spacing(12)] lg:[--cell-size:--spacing(16)] xl:[--cell-size:--spacing(24)]"
           formatters={{
-            formatMonthDropdown: (date) => {
-              return date.toLocaleString("default", { month: "long" })
-            },
+            formatMonthDropdown: (date) => getMonthName(date.getMonth().toString()),
           }}
           weekStartsOn={1}
           components={{
@@ -35,9 +38,9 @@ const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigPro
               const amount = getItemsForDate(items, day.date).reduce((acc, item) => acc + item.amount, 0);
               return (
                 <CalendarDayButton day={day} {...props} >
-                  <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-5 text-xs md:text-base">
                     {children}
-                    <span>{amount === 0 ? "" : formatAmountCurrency(amount)}</span>
+                    <span className="hidden md:block text-xs lg:text-base">{amount === 0 ? "" : formatAmountCurrency(amount)}</span>
                   </div>
                 </CalendarDayButton>
               )

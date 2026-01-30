@@ -30,7 +30,9 @@ export default async function RootLayout({
       className={`bg-bg-primary min-h-screen flex flex-col`}
     >
       <AppHeader />
-      {children}
+      <main className="flex-1 flex">
+        {children}
+      </main>
       <Footer />
     </div>
   );

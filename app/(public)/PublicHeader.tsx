@@ -5,8 +5,8 @@ import Logo from "../../components/layout/Logo";
 const PublicHeader = async () => {
 
   return (
-    <div className="bg-bg-primary/90 w-full h-16 flex items-center justify-center top-0 z-50 backdrop-blur sticky border-b border-white">
-      <div className="w-3/4 flex justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-bg-primary/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4">
         <Logo boxSize="lg" fontSize="2xl" includeText={true} />
         <div className="flex items-center gap-2">
           <Button asChild variant="primary">
@@ -21,7 +21,7 @@ const PublicHeader = async () => {
           </Button>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

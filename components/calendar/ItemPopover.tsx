@@ -9,25 +9,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { JSX } from "react";
 import { DataItem } from "@/server/items";
+import { categories } from "@/lib/dashboard";
 
 interface Props {
     popoverTrigger: JSX.Element,
     onSubmit: (data: AddNewItemFormSchema) => void
     item?: DataItem
 }
-
-//TODO: Make categories user specific
-const categories = [
-    "Food",
-    "Transportation",
-    "Housing",
-    "Utilities",
-    "Entertainment",
-    "Health",
-    "Education",
-    "Travel",
-    "Other"
-];
 
 const formSchema = z.object({
     name: z
@@ -49,17 +37,23 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
         defaultValues: {
             name: item?.name ?? "",
             amount: item?.amount ?? 1,
-            categories: item?.categories ?? [categories[0]],
+            categories: item?.categories ?? [categories[0].name],
         },
     })
+
+
+    const onSubmitHandler = (data: AddNewItemFormSchema) => {
+        onSubmit(data);
+        form.reset();
+    }
 
     return (
         <Popover>
             <PopoverTrigger asChild>
-                { popoverTrigger }
+                {popoverTrigger}
             </PopoverTrigger>
             <PopoverContent side="bottom" align="start" className="w-70">
-                <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="add-new-item-form" onSubmit={form.handleSubmit(onSubmitHandler)}>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <CustomController form={form} name="name" label="Name" type="text" placeholder="Name" />
@@ -69,7 +63,7 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                                 control={form.control}
                                 name="categories"
                                 render={({ field, fieldState }) => (
-                                    <Field data-invalid={fieldState.invalid}>
+                                    <Field data-invalid={fieldState.invalid} className="w-fit">
                                         <FieldLabel className="text-white">
                                             Category
                                         </FieldLabel>
@@ -78,16 +72,16 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
                                             value={field.value?.[0] ?? categories[0]}
                                             onValueChange={(value) => field.onChange([value])}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="">
                                                 <SelectValue placeholder="Select category" />
                                             </SelectTrigger>
 
                                             <SelectContent>
                                                 <SelectGroup>
                                                     <SelectLabel>Categories</SelectLabel>
-                                                    {categories.map((category) => (
-                                                        <SelectItem key={category} value={category}>
-                                                            {category}
+                                                    {categories.map(({ name }) => (
+                                                        <SelectItem key={name} value={name}>
+                                                            {name}
                                                         </SelectItem>
                                                     ))}
                                                 </SelectGroup>
@@ -103,7 +97,9 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
 
                         </div>
                     </div>
-                    <Button variant="primary" className="mt-4" form="add-new-item-form" type="submit">Add Item</Button>
+                    <div>
+                        <Button variant="primary" className="mt-4 ml-auto flex" form="add-new-item-form" type="submit">Add Item</Button>
+                    </div>
                 </form>
             </PopoverContent>
         </Popover>
