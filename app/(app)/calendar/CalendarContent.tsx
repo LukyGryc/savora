@@ -11,7 +11,7 @@ const CalendarContent = ({ items }: { items: DataItem[] }) => {
 
     return (
         <div className="w-fit flex-col lg:flex-row gap-10 flex mx-auto">
-            <Card className="flex flex-col w-f">
+            <Card className="flex flex-col">
                 <CardHeader>
                     <CardTitle>Calendar</CardTitle>
                 </CardHeader>

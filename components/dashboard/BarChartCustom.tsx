@@ -1,4 +1,4 @@
-import { Bar, BarChart, Legend, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart"
 import { formatAmountCurrency } from "@/lib/itemsUtil"
 
@@ -30,7 +30,10 @@ const BarChartCustom = ({ data, config, dataKey, nameKey, className, type }: Pro
             return <YAxis
                 type="category"
                 dataKey={nameKey}
-                tickFormatter={(value) => value.length > 8 ? `${value.slice(0, 8)}...` : value}
+                tickFormatter={(value) => {
+                    if (typeof value !== "string") return "";
+                    return value.length > 8 ? `${value.slice(0, 8)}...` : value
+                }}
             />
         } else {
             return <YAxis type="number" dataKey={dataKey} />

@@ -3,6 +3,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DataItem } from "@/server/items"
 import { formatAmountCurrency } from "@/lib/itemsUtil"
 import { getDashboardData, getDateRange, getMonthName, getYears, MonthColumn } from "@/lib/dashboard"
+import { cn } from "@/lib/utils"
+import { Separator } from "../ui/separator"
 
 
 const OverviewTable = ({ items, className }: { items: DataItem[], className?: string }) => {
@@ -20,9 +22,6 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
     const yearColSpans = years.map(
         (year) => columns.filter((c) => c.year === year).length
     )
-
-    console.log(columns)
-
 
     const applyBorder = ({ year, month }: ReturnType<typeof getDateRange>[number]): string => {
         //Columns are already sorted by year, so we can just find the first and last month of the year
@@ -42,32 +41,33 @@ const OverviewTable = ({ items, className }: { items: DataItem[], className?: st
     return (
         <Card className={className}>
             <CardHeader>
-                <CardTitle>Your spending overview</CardTitle>
+                <CardTitle className="text-base md:text-xl">Your spending overview</CardTitle>
             </CardHeader>
-            <CardContent className="h-full p-8">
-                <Table className="h-full">
+            <Separator className="my-4 border-b border-white/20" />
+            <CardContent>
+                <Table>
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className={`text-center border-b ${borderColorMain}`} rowSpan={2}>
+                        <TableRow >
+                            <TableHead className={`text-center border-b ${borderColorMain} font-semibold`} rowSpan={2}>
                                 Category
                             </TableHead>
                             {years.map((year) => (
                                 <TableHead
-                                    className="text-center border-b border-white/20"
+                                    className="text-center border-b border-white/20 font-semibold"
                                     key={year}
                                     colSpan={yearColSpans[years.indexOf(year)]}
                                 >
                                     {year}
                                 </TableHead>
                             ))}
-                            <TableHead className={`text-center border-b ${borderColorMain}`} rowSpan={2}>
+                            <TableHead className={`text-center border-b ${borderColorMain} font-semibold`} rowSpan={2}>
                                 Total
                             </TableHead>
                         </TableRow>
                         <TableRow>
                             {columns.map(({ year, month }) => {
                                 return (
-                                    <TableHead className={`text-center border-b ${borderColorMain}`} key={`${month}.${year}_columns`}>
+                                    <TableHead className={`text-center border-b ${borderColorMain} font-semibold`} key={`${month}.${year}_columns`}>
                                         {getMonthName(month)}
                                     </TableHead>
                                 )

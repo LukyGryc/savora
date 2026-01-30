@@ -1,13 +1,14 @@
 "use client"
 
-import BarChartCustom from "@/components/charts/BarChartCustom"
-import PieChartCustom from "@/components/charts/PieChartCustom"
+import BarChartCustom from "@/components/dashboard/BarChartCustom"
+import PieChartCustom from "@/components/dashboard/PieChartCustom"
 import SelectCustom from "@/components/layout/SelectCustom"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig } from "@/components/ui/chart"
 import { categories, getDashboardData, getDateRange, getMonthName, getYears } from "@/lib/dashboard"
 import { DataItem } from "@/server/items"
 import { useEffect, useRef, useState } from "react"
+import { Separator } from "../ui/separator"
 
 const chartConfig = {
   amount: {
@@ -73,9 +74,9 @@ export function DashboardChartCard({ items, className }: { items: DataItem[], cl
 
   return (
     <Card ref={observedElement} className={className}>
-      <CardHeader>
-        <CardTitle>Your spending visualized</CardTitle>
-        <CardDescription>
+      <CardHeader className="flex flex-col gap-6">
+        <CardTitle className="text-base md:text-xl">Your spending visualized</CardTitle>
+        <CardDescription className="w-full">
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
             <div className="flex gap-2">
               <SelectCustom
@@ -93,7 +94,7 @@ export function DashboardChartCard({ items, className }: { items: DataItem[], cl
             </div>
             <div>
               <SelectCustom
-                items={[{ value: "pie", label: "Pie Chart" }, { value: "bar", label: "Bar Chart" }]}
+                items={[{ value: "bar", label: "Bar Chart" }, { value: "pie", label: "Pie Chart" }]}
                 value={selectedChart}
                 onChange={(value) => setSelectedChart(value as "pie" | "bar")}
                 groupLabel="Chart Type"
@@ -102,6 +103,7 @@ export function DashboardChartCard({ items, className }: { items: DataItem[], cl
           </div>
         </CardDescription>
       </CardHeader>
+      <Separator className="mb-4  border-b border-white/20" />
       <CardContent>
         {selectedChart === "pie" ? (
           <PieChartCustom

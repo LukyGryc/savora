@@ -56,7 +56,7 @@ export const addData = async (item: CreateDataItemInput) => {
     }
 }
 
-export const updateData = async (item: Exclude<CreateDataItemInput, "date">, id: string) => {
+export const updateData = async (item: Omit<CreateDataItemInput, "date">, id: string) => {
 
     try {
         const userId = await getUserID();

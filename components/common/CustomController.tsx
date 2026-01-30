@@ -31,14 +31,15 @@ function CustomController<T extends FieldValues>({
             {...field}
             onChange={(e) => {
               if (type !== "number") return field.onChange(e.target.value)
-              if (e.target.value === "") return field.onChange(0)
+              //This is so you can remove the default and start typing the number, felt bad using when this was field.onChange(0) 
+              if (e.target.value === "") return field.onChange("")
               const num = e.target.valueAsNumber
               if (Number.isNaN(num)) return field.onChange(0)
               return field.onChange(num)
             }}
             id={field.name}
             type={type}
-            step={type === "number" ? 0.01 : undefined}
+            step={type === "number" ? 1 : undefined}
             placeholder={placeholder}
             className="text-white border border-white"
           />

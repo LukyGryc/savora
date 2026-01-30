@@ -89,15 +89,15 @@ export const getDateRange = (data: CategoryData[]) => {
 }
 
 export const getDashboardData = (items: DataItem[]) => {
-    // Get unique categories, categories[0] as only one category is supported
+    // Get unique categories, categories[0] as only one category is supported, but went with string[] for future proofing
     const categories = Array.from(
         new Set(
-            items.map((item) => item.categories[0])
+            items.map((item) => item.categories?.[0])
         )
     );
 
     const data: CategoryData[] = categories.map((category) => {
-        const itemsForCategory = items.filter((item) => item.categories[0] === category)
+        const itemsForCategory = items.filter((item) => item.categories?.[0] === category)
         const amount: AmountGrid = {}
 
         let total = 0;
