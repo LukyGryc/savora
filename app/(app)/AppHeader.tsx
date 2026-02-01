@@ -7,7 +7,7 @@ import NavigationDrawer from "@/components/layout/NavigationDrawer";
 const AppHeader = async () => {
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-bg-primary/90 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-bg-primary/90 backdrop-blur" role="banner">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4">
         <div className="flex items-center gap-8">
           <Logo
@@ -16,7 +16,7 @@ const AppHeader = async () => {
             includeText
           />
 
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-2" aria-label="Main navigation">
             <Button asChild variant="ghost">
               <Link href="/calendar">Calendar</Link>
             </Button>

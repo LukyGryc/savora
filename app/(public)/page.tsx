@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="mi-h-dvh bg-bg-primary">
+    <div className="min-h-dvh bg-bg-primary">
       <IntroSection />
       <HowItWorksSection />
       <EverythingYouNeedSection />

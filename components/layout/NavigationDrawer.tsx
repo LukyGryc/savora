@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleX, Cross, CrossIcon, MenuIcon } from "lucide-react";
+import { CircleX, MenuIcon } from "lucide-react";
 import { DrawerContent, DrawerHeader, DrawerTrigger, Drawer, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "../ui/drawer";
 import Link from "next/link";
 import LogoutButton from "../auth/LogoutButton";
@@ -14,18 +14,22 @@ const NavigationDrawer = () => {
     return (
         <Drawer open={open} onOpenChange={setOpen} direction="right">
             <DrawerTrigger asChild>
-                <MenuIcon className="h-5 w-5" onClick={() => setOpen(true)} />
+                <button type="button" className="inline-flex items-center justify-center" aria-label="Open menu">
+                  <MenuIcon className="h-5 w-5" aria-hidden />
+                </button>
             </DrawerTrigger>
             <DrawerContent>
                 <DrawerHeader className="border-b border-white/10">
                     <DrawerTitle className="flex items-center justify-between">
                         Navigation
-                        <CircleX className="h-5 w-5 cursor-pointer" onClick={() => setOpen(false)} />
+                        <button type="button" className="cursor-pointer rounded p-1 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-ring" onClick={() => setOpen(false)} aria-label="Close menu">
+                          <CircleX className="h-5 w-5" aria-hidden />
+                        </button>
                     </DrawerTitle>
                 </DrawerHeader>
 
 
-                <nav className="flex flex-col items-start  p-4 gap-2 h-full">
+                <nav className="flex flex-col items-start p-4 gap-2 h-full" aria-label="Mobile navigation">
 
                     <Button asChild variant="ghost" className="border border-white/10 hover:bg-white/10">
                         <Link href="/calendar" onClick={() => setOpen(false)}>Calendar</Link>
