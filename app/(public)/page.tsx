@@ -6,7 +6,7 @@ import ReadyToTrackSmarterSection from "@/components/landingPage/ReadyToTrackSma
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Home | Savora',
+  title: 'Home',
 };
 
 export default function Home() {
