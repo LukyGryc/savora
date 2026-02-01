@@ -63,7 +63,7 @@ export function SignUpForm({
           <CardTitle className="text-xl text-white">Welcome</CardTitle>
         </CardHeader>
         <CardContent>
-          <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)} aria-label="Sign up" noValidate>
             <FieldGroup>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 <span className="text-white">Start by creating an account</span>
@@ -80,7 +80,14 @@ export function SignUpForm({
                   variant="primary"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign Up"}
+                  {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                    <span className="sr-only">Creating account…</span>
+                  </>
+                ) : (
+                  "Sign Up"
+                )}
                 </Button>
               </Field>
             </FieldGroup>

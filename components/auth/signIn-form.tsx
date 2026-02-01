@@ -61,14 +61,23 @@ export function LoginForm({
           <CardTitle className="text-xl text-white">Welcome back</CardTitle>
         </CardHeader>
         <CardContent>
-          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} aria-label="Sign in" noValidate>
             <FieldGroup>
 
               <CustomController form={form} name="email" label="Email" type="email" placeholder="email@example.com" />
               <CustomController form={form} name="password" label="Password" type="password" placeholder="Password" />
 
               <Field>
-                <Button form="login-form" type="submit" variant="primary" disabled={form.formState.isSubmitting}>{ form.formState.isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Sign In" }</Button>
+                <Button form="login-form" type="submit" variant="primary" disabled={form.formState.isSubmitting} aria-busy={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                      <span className="sr-only">Signing in…</span>
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
                 <FieldDescription className="text-center text-white">
                   Don&apos;t have an account? <Link href="/signup">Sign up</Link>
                 </FieldDescription>
