@@ -22,11 +22,11 @@ export default async function RootLayout({
   const isLoggedIn = await isUserLoggedIn();
 
   return (
-    <div
-      className={`bg-bg-primary min-h-screen flex flex-col`}
-    >
+    <div className="bg-bg-primary min-h-screen flex flex-col">
       {isLoggedIn ? <AppHeader /> : <PublicHeader />}
-      {children}
+      <main id="main-content" className="flex flex-1 flex-col" role="main">
+        {children}
+      </main>
       <Footer />
     </div>
   );
