@@ -5,6 +5,8 @@ import { Calendar, CalendarDayButton } from "../ui/calendar"
 import { Card, CardContent } from "../ui/card"
 import { formatAmountCurrency, getItemsForDate } from "@/lib/itemsUtil";
 import { getMonthName } from "@/lib/dashboard";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CalendarCard_BigProps {
   selectedDate: Date;
@@ -28,12 +30,18 @@ const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigPro
           onSelect={onSelect}
           numberOfMonths={1}
           captionLayout="dropdown"
-          className="[--cell-size:--spacing(8)] sm:[--cell-size:--spacing(12)] lg:[--cell-size:--spacing(16)] xl:[--cell-size:--spacing(24)]"
+          className="[--cell-size:--spacing(6)] sm:[--cell-size:--spacing(12)] lg:[--cell-size:--spacing(16)] xl:[--cell-size:--spacing(24)]"
           formatters={{
             formatMonthDropdown: (date) => getMonthName(date.getMonth().toString()),
           }}
           weekStartsOn={1}
           components={{
+            //Hotfix for mobile so the dropdown and chevrons don't overlap
+            Chevron({ orientation, className, ...props }) {
+              return orientation === "right" 
+              ? <ChevronRightIcon {...props} className={cn(className, "hidden md:block")} /> 
+              : <ChevronLeftIcon className={cn(className, "hidden md:block")} {...props} />
+            },
             DayButton: ({ children, day, ...props }) => {
               const amount = getItemsForDate(items, day.date).reduce((acc, item) => acc + item.amount, 0);
               return (
