@@ -40,8 +40,21 @@ const BarChartCustom = ({ data, config, dataKey, nameKey, className, type }: Pro
         }
     }
 
+    const getChartHeight = () => {
+        if (type === "vertical") {
+            return data.length * 50 + 150
+        } else {
+            return 150
+        }
+    }
+
     return (
-        <ChartContainer config={config} className={className}>
+        <ChartContainer
+            config={config}
+            //Had to add the aspect-auto w-full because the chart was not being displayed correctly on mobile, trying to preserve the original 16:9 ratio
+            className={type === "vertical" ? `aspect-auto w-full ${className ?? ""}`.trim() : className}
+            style={type === "vertical" ? { height: getChartHeight(), width: "100%" } : undefined}
+        >
             <BarChart
                 accessibilityLayer
                 data={data}

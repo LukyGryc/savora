@@ -117,7 +117,7 @@ export function DashboardChartCard({ items, className }: { items: DataItem[], cl
             config={chartConfig}
             dataKey="amount"
             nameKey="category"
-            className="min-h-[150px] w-full"
+            className="min-h-[150px]"
             type={dimensions.width > 500 ? "horizontal" : "vertical"}
           />
         )}
