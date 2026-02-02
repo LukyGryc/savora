@@ -10,7 +10,7 @@ const CalendarContent = ({ items }: { items: DataItem[] }) => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     return (
-        <div className="w-fit flex-col lg:flex-row gap-10 flex mx-auto">
+        <div className="w-fit flex-col lg:flex-row gap-10 flex mx-auto items-stretch">
             <Card className="flex flex-col">
                 <CardHeader>
                     <CardTitle>Calendar</CardTitle>

@@ -63,7 +63,7 @@ const Tracking = ({ selectedDate, items }: TrackingProps) => {
     const itemsForDate = getItemsForDate(items, selectedDate);
 
     return (
-        <Card className="flex flex-col lg:w-[400px] w-full max-h-[80vh] overflow-y-auto">
+        <Card className="flex flex-col lg:w-[400px] w-full overflow-y-auto">
             <CardHeader>
                 <CardTitle className="text-base md:text-xl">{format(selectedDate, "EEEE, MMMM d, yyyy")}</CardTitle>
             </CardHeader>

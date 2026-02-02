@@ -16,8 +16,10 @@ export default async function SignUpPage() {
   }
 
   return (
-    <div className="bg-bg-primary max-w-sm flex mx-auto flex-1 items-center justify-center">
+    <div className="bg-bg-primary flex flex-1 flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="flex w-full max-w-sm flex-col gap-6">
         <SignUpForm />
+      </div>
     </div>
   )
 }
