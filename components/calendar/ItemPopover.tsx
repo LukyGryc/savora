@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomController from "../common/CustomController";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import { JSX } from "react";
+import { JSX, useEffect, useState } from "react";
 import { DataItem } from "@/server/items";
 import { categories } from "@/lib/dashboard";
 
@@ -24,7 +24,8 @@ const formSchema = z.object({
     // allow decimals, minimum $0.01
     amount: z
         .number({ error: "Must be a number" })
-        .min(0.01, "Amount must be at least 0.01."),
+        .min(0.01, "Amount must be at least 0.01.")
+        .refine((n) => String(Math.floor(n)).length <= 9, "Amount must be at most 9 digits."),
     categories: z
         .array(z.string())
 });
@@ -32,6 +33,9 @@ const formSchema = z.object({
 export type AddNewItemFormSchema = z.infer<typeof formSchema>;
 
 const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
+
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    
     const form = useForm<AddNewItemFormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,16 +43,35 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
             amount: item?.amount ?? 1,
             categories: item?.categories ?? [categories[0].name],
         },
-    })
+    });
 
+    // Sync form with current item when popover opens (fixes stale data after optimistic edit)
+    useEffect(() => {
+        if (isPopoverOpen) {
+            if (item) {
+                form.reset({
+                    name: item.name,
+                    amount: item.amount,
+                    categories: item.categories ?? [categories[0].name],
+                });
+            } else {
+                form.reset({
+                    name: "",
+                    amount: 1,
+                    categories: [categories[0].name],
+                });
+            }
+        }
+    }, [isPopoverOpen, item]);
 
     const onSubmitHandler = (data: AddNewItemFormSchema) => {
         onSubmit(data);
+        setIsPopoverOpen(false);
         form.reset();
     }
 
     return (
-        <Popover>
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
                 {popoverTrigger}
             </PopoverTrigger>

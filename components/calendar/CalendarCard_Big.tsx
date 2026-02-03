@@ -48,7 +48,7 @@ const CalendarCard_Big = ({ selectedDate, onSelect, items }: CalendarCard_BigPro
                 <CalendarDayButton day={day} {...props} >
                   <div className="flex flex-col gap-5 text-xs md:text-base">
                     {children}
-                    <span className="hidden md:block text-xs lg:text-base">{amount === 0 ? "" : formatAmountCurrency(amount)}</span>
+                    <span className="hidden md:block text-xs">{amount === 0 ? "" : formatAmountCurrency(amount)}</span>
                   </div>
                 </CalendarDayButton>
               )

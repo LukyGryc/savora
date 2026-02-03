@@ -4,7 +4,7 @@ import { db } from "@/db/drizzle";
 import { dataTable } from "@/db/schema";
 import { getUserID } from "@/server/users";
 import { CreateDataItemInput } from "@/types/itemTypes";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export interface DataItem {
@@ -123,7 +123,11 @@ export async function getItemsForUser(): Promise<DataItem[]> {
         return [];
     }
 
-    const rows = await db.select().from(dataTable).where(eq(dataTable.userId, userId));
+    const rows = await db
+        .select()
+        .from(dataTable)
+        .where(eq(dataTable.userId, userId))
+        .orderBy(asc(dataTable.createdAt));
 
     return rows.map((r: any) => ({
         ...r,
