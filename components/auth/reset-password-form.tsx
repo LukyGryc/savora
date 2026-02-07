@@ -41,16 +41,20 @@ export const ResetPasswordForm = () => {
             return;
         }
 
-        const { error } = await authClient.resetPassword({
-            newPassword: password,
-            token,
-          });
+        try {
+            const { error } = await authClient.resetPassword({
+                newPassword: password,
+                token,
+            });
 
-        if (error) {
-            toast.error(error.message || "Failed to reset password");
-        } else {
-            toast.success("Password reset successfully");
-            router.push("/calendar");
+            if (error) {
+                toast.error(error.message || "Failed to reset password");
+            } else {
+                toast.success("Password reset successfully");
+                router.push("/calendar");
+            }
+        } catch {
+            toast.error("Failed to reset password. Please try again.");
         }
     }
 
