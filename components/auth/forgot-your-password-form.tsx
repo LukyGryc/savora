@@ -27,7 +27,7 @@ export const ForgotYourPasswordForm = () => {
 
     const onSubmit = async ({ email }: ForgotYourPasswordFormSchema) => {
         const { error } = await authClient.requestPasswordReset({
-            email: email,
+            email,
             redirectTo: "/reset-password",
         });
 

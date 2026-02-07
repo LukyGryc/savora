@@ -9,6 +9,10 @@ import ForgotYourPasswordEmail from "@/components/emails/forgot-your-password";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://*savora*.vercel.app"
+  ],
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
