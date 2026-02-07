@@ -5,6 +5,23 @@ import { SignUpFormSchema } from "@/components/auth/signup-form";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+export async function logUserOut() {
+  try {
+    await auth.api.signOut({
+      headers: await headers()
+    })
+    return {
+      success: true,
+      message: "Logged out successfully",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Logout failed",
+    };
+  }
+}
+
 export const signIn = async ({ email, password }: SignInFormSchema) => {
   try {
     await auth.api.signInEmail({
@@ -68,8 +85,4 @@ export const getUserEmail = async (): Promise<string> => {
 export const getUserID = async (): Promise<string> => {
   const session = await auth.api.getSession({ headers: await headers() });
   return session?.session.userId ?? ""
-}
-
-export const logUserOut = async () => {
-  await auth.api.signOut({ headers: await headers() })
 }

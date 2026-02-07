@@ -66,7 +66,9 @@ export function LoginForm({
 
               <CustomController form={form} name="email" label="Email" type="email" placeholder="email@example.com" />
               <CustomController form={form} name="password" label="Password" type="password" placeholder="Password" />
-
+              <FieldDescription className="text-right text-white">
+                <Link href="/forgot-your-password" className="text-white hover:text-white/80">Forgot your password?</Link>
+              </FieldDescription>
               <Field>
                 <Button form="login-form" type="submit" variant="primary" disabled={form.formState.isSubmitting} aria-busy={form.formState.isSubmitting}>
                   {form.formState.isSubmitting ? (
