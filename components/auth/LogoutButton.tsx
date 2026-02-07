@@ -4,13 +4,14 @@ import { Button } from "../ui/button"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
-const LogoutButton = () => {
+const LogoutButton = ( { onClick }: { onClick?: () => void } ) => {
   const router = useRouter()
 
   const handleLogout = async () => {
     const { success, message } = await logUserOut()
     if (success) {
       toast.success(message)
+      onClick?.();
       router.push("/signin")
     } else {
       toast.error(message)
