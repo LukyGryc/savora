@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form"
 import CustomController from "../common/CustomController"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { FieldGroup } from "../ui/field"
 import { zodResolver } from "@hookform/resolvers/zod"
 import z from "zod"
@@ -58,6 +58,7 @@ export const ResetPasswordForm = () => {
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>Reset your password</CardTitle>
+                <CardDescription>This feature is available for verified users only.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
                 <form id="reset-password-form" onSubmit={form.handleSubmit(onSubmit)} aria-label="Reset password" noValidate>
