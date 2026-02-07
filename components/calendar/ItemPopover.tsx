@@ -45,7 +45,6 @@ const ItemPopover = ({ popoverTrigger, onSubmit, item }: Props) => {
         },
     });
 
-    // Sync form with current item when popover opens (fixes stale data after optimistic edit)
     useEffect(() => {
         if (isPopoverOpen) {
             if (item) {
